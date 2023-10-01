@@ -2,26 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+@layer components{
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    .navbar{
+        @apply flex flex-col shrink backdrop-blur-xl bg-transparent 
+        justify-between w-full text-stone-400 
+        py-10 font-extrabold text-3xl antialiased font-mono  lg:flex-row ;
+    }
+    .navbar-elements{
+        @apply  mx-5 mt-2 hover:text-green-500 shrink ;  
+        
+    } 
+    .navbar-border{
+        @apply hover:border-b border-green-500  transition-all;
+    }
+    .course-card-grid{
+        @apply w-full bg-stone-800 py-10;
+    }
+    .course-grid{
+        @apply w-full bg-black py-10;
+    }
 }
