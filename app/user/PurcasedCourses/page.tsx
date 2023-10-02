@@ -6,7 +6,7 @@ import { courseState, coursesstate } from "@/lib/store/atoms/course"
 import { coursesDetails } from "@/lib/store/selectors/courses"
 
 
-export const Purchased = ()=>{
+ const Purchased = ()=>{
   const setAllcourses = useSetRecoilState(coursesstate) ;
   const Courses = useRecoilValue(coursesDetails);
   const init = async () => {
@@ -72,3 +72,5 @@ const ProgressBar = (props:any)=>{
     </div>
  
 }
+
+export default Purchased
