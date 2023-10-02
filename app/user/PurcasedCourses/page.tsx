@@ -1,9 +1,9 @@
-import Carousel from "better-react-carousel"
+"use client";
 import { useState,useEffect } from "react"
 import axios from "axios"
 import { useSetRecoilState,useRecoilValue } from "recoil"
-import { courseState, coursesstate } from "../../store/atoms/course"
-import { coursesDetails } from "../../store/selectors/courses"
+import { courseState, coursesstate } from "@/lib/store/atoms/course"
+import { coursesDetails } from "@/lib/store/selectors/courses"
 
 
 export const Purchased = ()=>{

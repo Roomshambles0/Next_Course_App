@@ -9,7 +9,7 @@ import { courseTitle, coursePrice, isCourseLoading, courseImage,courseDescriptio
 
 
 export const Update = ()=>{
-  let { id } = useParams();
+  let  {id}  = useParams();
     return(<div className="mx-auto w-full  bg-stone-800   border-white text-white overflow-hidden shadow-md h-full pt-60">
     <div className="p-8">
     <p className="font-mono font-bold text-4xl pt-5 flex justify-center ">Update Course</p>
