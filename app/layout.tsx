@@ -3,6 +3,10 @@ import './globals.css';
 
 import type { Metadata } from 'next'
 import RecoidContextProvider from './recoilcontextProvider';
+import Navbar from '@/components/Navabar';
+import InitAdmin from '@/components/Initadmin';
+import InitUser from '@/components/Inituser';
+
 export const metadata: Metadata = {
   title: 'Course_app',
   description: 'Course app',
@@ -16,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RecoidContextProvider>{children}</RecoidContextProvider>
+        <RecoidContextProvider><Navbar /> <InitUser /> <InitAdmin/>{children}</RecoidContextProvider>
         </body>
     </html>
   )

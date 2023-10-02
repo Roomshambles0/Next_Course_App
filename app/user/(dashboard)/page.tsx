@@ -10,7 +10,7 @@ import { coursesDetails } from "@/lib/store/selectors/courses"
 
 
 
-export const PageCourse = () =>{
+ const PageCourse = () =>{
 const setAllcourses = useSetRecoilState(coursesstate) 
 
 const init = async () => {
@@ -93,3 +93,4 @@ const CourseCard = (props:any) =>{
 
 
 
+    export default PageCourse
