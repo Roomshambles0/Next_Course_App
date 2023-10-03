@@ -11,13 +11,15 @@
   "dependencies": {
     "axios": "^1.5.1",
     "better-react-carousel": "^1.1.2",
-    "next": "latest",
+    "mongoose": "^7.5.3",
+    "next": "^13.5.4",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^4.11.0",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
