@@ -1,3 +1,8 @@
-export async function GET(request: Request) {    const courseId = req.params.courseId;
+import {NextResponse} from "next/Server"
+
+
+
+export async function GET(request: Request, context: {courseId}) {    
+    const courseId = params.courseId;
     const course = await Course.findById(courseId);
-    res.json({ course });}
+    NextResponse.json({ course });}

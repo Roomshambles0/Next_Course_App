@@ -13,19 +13,20 @@ export async function POST(request: Request) {
     await course.save();
     admin.createdCourses.push(courseId);
     await admin.save(); 
-    res.json({ message: 'Course created successfully', courseId: course.id });
+    NextResponse.json({ message: 'Course created successfully', courseId: course.id });
     } else {
-      res.status(403).json({ message: 'admin not found' });
+      NextResponse.json({ message: 'admin not found' },{status:403});
     }
     }else {
-      res.status(404).json({ message: 'Course not created' });
+      NextResponse.json({ message: 'Course not created' },{status:404});
     }
 }
 
-export async function GET(request: Request) {const admin = await Admin.findOne({username:req.headers.user}).populate('createdCourses');
+export async function GET(request: Request) {
+  const admin = await Admin.findOne({username:req.headers.user}).populate('createdCourses');
 if (admin) {
-  res.json({ createdCourses: admin.createdCourses || [] });
+  NextResponse.json({ createdCourses: admin.createdCourses || [] });
 } else {
-  res.status(403).json({ message: 'not found' });
+  NextResponse.json({ message: 'not found' },{status:404});
 }
 }
