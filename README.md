@@ -4,7 +4,8 @@
 - Typescript
 - Next.js
 - Next Auth
-- MongoDB
+- PostgreSQL
+- Prisma 
 - Redis
 - Docker
 - Vercel

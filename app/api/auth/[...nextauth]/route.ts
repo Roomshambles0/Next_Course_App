@@ -1,10 +1,11 @@
 import NextAuth, { AuthOptions } from "next-auth";
-import  {User,Admin}  from "@/mongoose/schema"
+import bcrypt from "bcrypt"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
-import { ensureDbConnected } from "@/lib/dbConnect";
 import  CredentialsProvider from "next-auth/providers/credentials";
 import { Provider } from "next-auth/providers/index";
+import { Pclient } from "@/lib/prismadb";
+import { Role } from "@prisma/client";
 
   
 
@@ -26,28 +27,37 @@ export const authOptions :AuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                await ensureDbConnected()
+                
                 if (!credentials) {
                     return null;
                 }
                 const username = credentials.username;
                 const password = credentials.password;
                 // Add logic here to look up the user from the credentials supplied
-                const admin:any = await Admin.findOne({ username });
+                const hashedpassword = await bcrypt.hash(password, 12);
+                const admin = await Pclient.admin.findUnique({
+                    where:{
+                        email: username
+                    }
+                })
 
-                if (!admin) {
+                if (!admin || admin.hashedpassword) {
                     throw new Error('Admin doesnt exist');
                     
                 } else {
                     //TODO:: Make this safer, encrypt passwords
-                    if (admin.password !== password || admin.username !== username) {
+                    if (admin.hashedpassword !== hashedpassword || admin.email !== username) {
                         throw new Error('Invalid credentials');
                     }
-                    // User is authenticated
-                    return {
-                        id: admin._id,
-                        email: admin.username
-                    }
+
+                const role =  Role.ADMIN;
+                const user = await Pclient.user.findUnique({
+                where:{
+                    email:username,
+                    role
+                }
+                })
+                    return user
                 }
             }
         }),CredentialsProvider({ id: "user",
@@ -57,29 +67,36 @@ export const authOptions :AuthOptions = {
             username: { label: "Username", type: "text", placeholder: "jsmith" },
             password: { label: "Password", type: "password" }
         }, async authorize(credentials, req) {
-            await ensureDbConnected()
             if (!credentials) {
                 return null;
             }
             const username = credentials.username;
             const password = credentials.password;
             // Add logic here to look up the user from the credentials supplied
-            const user:any = await User.findOne({ username });
-
-            if (!user) {
-                throw new Error('Admin doesnt exist');
+            const hashedpassword = await bcrypt.hash(password, 12);
+            const student =  await Pclient.student.findUnique({
+              where:{  
+                email:username
+            }
+            })
+            if (!student) {
+                throw new Error('student doesnt exist');
                 
             } else {
                 //TODO:: Make this safer, encrypt passwords
-                if (user.password !== password || user.username !== username) {
+                if (student.hashedpassword !== hashedpassword || student.email !== username) {
                     throw new Error('Invalid credentials');
                 }
 
                 // User is authenticated
-                return {
-                    id: user._id,
-                    email: user.username,
+                const role =  Role.USER;
+                const user = await Pclient.user.findUnique({
+                where:{
+                    email:username,
+                    role
                 }
+                })
+                    return user
             }
         }}),
     ] as Provider[],

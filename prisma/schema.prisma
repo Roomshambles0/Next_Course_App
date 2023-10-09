@@ -11,19 +11,21 @@ datasource db {
 }
 
 model Student {
-  id         Int     @id @default(autoincrement())
-  email      String  @unique
-  name       String?
-  password   String
+  id                  Int     @id @default(autoincrement())
+  email               String  @unique
+  name                String?
+  hashedpassword      String
+  role                Role @default(USER)
   purchasedcourses    Course[]
 }
 
 model Admin {
-  id         Int     @id @default(autoincrement())
-  email      String  @unique
-  name       String?
-  password   String
-  courses    Course[]
+  id               Int     @id @default(autoincrement())
+  email            String  @unique
+  name             String?
+  hashedpassword   String
+  role             Role @default(ADMIN)
+  courses          Course[]
 }
 
 model Course {
@@ -70,17 +72,16 @@ enum Role {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  password      String
-  role           Role
-  accounts      Account[]
-  sessions      Session[]
+  id               String    @id @default(cuid())
+  name             String?
+  email            String   @unique
+  emailVerified    DateTime?
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  role             Role  @default(USER)
+  accounts         Account[]
+  sessions         Session[]
 }
 
 model VerificationRequest {
