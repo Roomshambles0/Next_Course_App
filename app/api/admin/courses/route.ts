@@ -1,32 +1,68 @@
+import { getCurrentAdmin } from '@/app/actions/getCurrentAdmin';
+import getCurrentUser from '@/app/actions/getCurrentUser';
+import { Pclient } from '@/lib/prismadb';
 import { NextResponse } from 'next/server'
-import mongoose from 'mongoose';
-import { Admin,Course } from '@/mongoose/schema';
+
 
 export async function POST(request: Request) {
-    const createdCourse = request.body;
-    if(createdCourse){
-    const course = new Course(createdCourse);
-    const courseId: mongoose.Types.ObjectId = course._id;
-    const admin = await Admin.findOne({ username: request.headers.user});
-    console.log(admin);
-    if(admin){
-    await course.save();
-    admin.createdCourses.push(courseId);
-    await admin.save(); 
-    NextResponse.json({ message: 'Course created successfully', courseId: course.id });
-    } else {
-      NextResponse.json({ message: 'admin not found' },{status:403});
+  try{
+    const body =await request.json();
+    const {course} = body;
+    const user = await getCurrentUser();
+    if(user){
+      if(user.role == "ADMIN"){
+        const admin =await getCurrentAdmin();
+       const createCourse =  await Pclient.course.create({
+          data: {
+           title: course.title,
+           description: course.description,
+           imageLink: course.imageLink,
+           published: course.published,
+           teacher: {
+              connect: {
+                  id: admin?.id
+              }
+           }
+          }
+        })
+        return NextResponse.json({"message":"Course created succefully",CourseId:createCourse.id})
+      }else{
+        NextResponse.json({message:"user is not admin"},{status:400})
     }
-    }else {
-      NextResponse.json({ message: 'Course not created' },{status:404});
+    }else{
+      NextResponse.json({message:"user not found"},{status:400})
     }
+
+  }catch(e){
+    console.log(e);
+    NextResponse.json({Error:'Internal Error'},{status:500})
+  }
 }
 
 export async function GET(request: Request) {
-  const admin = await Admin.findOne({username:req.headers.user}).populate('createdCourses');
-if (admin) {
-  NextResponse.json({ createdCourses: admin.createdCourses || [] });
-} else {
-  NextResponse.json({ message: 'not found' },{status:404});
+  try {
+    const user = await getCurrentUser();
+    if(user){
+        if(user.role == "ADMIN"){
+          const admin = await Pclient.admin.findUnique({
+            where: {
+                email: user?.email,
+            },
+            include:{
+                courses:true,
+            }
+        })
+       const courses = admin?.courses;
+    
+       return NextResponse.json({courses})
+        }else{
+          NextResponse.json({message:"user is not admin"},{status:400})
+      }
+    }else{
+      NextResponse.json({message:"user not found"},{status:400})
+    }
+
+}catch(e){
+    NextResponse.json({status:400})
 }
 }

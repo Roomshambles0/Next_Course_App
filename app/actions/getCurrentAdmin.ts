@@ -2,7 +2,7 @@ import { Pclient } from "@/lib/prismadb";
 import getCurrentUser from "./getCurrentUser";
 
 
-export const getCurrentstudent = async ()=>{
+export const getCurrentAdmin = async ()=>{
     try {
         const user= await getCurrentUser();
     

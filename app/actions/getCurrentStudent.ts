@@ -12,7 +12,7 @@ export const getCurrentstudent = async ()=>{
     
         const currentstudent = await Pclient.student.findUnique({
           where: {
-            email: user.email as string
+            email: user.email as string,
           }
         });
     

@@ -1,8 +1,29 @@
-import {NextResponse} from "next/Server"
+import { NextResponse } from "next/server"
+import { getCurrentAdmin } from "@/app/actions/getCurrentAdmin";
+import { Pclient } from "@/lib/prismadb";
+interface IParams {
+    courseId?: number;
+  }
+  
 
-
-
-export async function GET(request: Request, context: {courseId}) {    
-    const courseId = params.courseId;
-    const course = await Course.findById(courseId);
-    NextResponse.json({ course });}
+export async function GET(request: Request, { params }: { params: IParams }) {    
+    try{
+        const courseId = params.courseId;
+        const admin = await getCurrentAdmin();
+        if(admin){
+     const course = await Pclient.course.findUnique(
+        {
+          where:{
+            id:courseId
+          }  
+        }
+     )
+     return NextResponse.json({course})
+        }else{
+            NextResponse.json({message:"admin not found"})
+        }
+    }catch(e){
+        console.log(e)
+        NextResponse.json(null);
+    }
+}
