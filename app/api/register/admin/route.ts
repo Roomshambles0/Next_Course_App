@@ -7,12 +7,13 @@ export async function POST(
     request: Request
   ){
     const body = await request.json();
-    var {email,name,password} = body;
+    var {name,username,password} = body;
+    console.log(body);
     const role = Role.ADMIN;
     const hashedpassword = await bcrypt.hash(password, 12);
-    const admin = await Pclient.admin.create({
+    const student = await Pclient.admin.create({
         data:{
-            email,
+            email:username,
             name,
             hashedpassword
         }
@@ -21,11 +22,11 @@ export async function POST(
     //creating user for next auth
     const user = await Pclient.user.create({
         data:{
-            email,
+            email:username,
             name,
             role
         }
     })
-    return NextResponse.json(admin);
+    return NextResponse.json(student);
 
 }

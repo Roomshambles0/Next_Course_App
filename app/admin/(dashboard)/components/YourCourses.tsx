@@ -16,12 +16,8 @@ export const Created = ()=>{
   let courseDetail = useRecoilValue(coursesstate);
   let courses = courseDetail.courses;
   const init = async () => {
-    const response = await axios.get(`http://localhost:3001/admin/courses`, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
-    const data = response.data.createdCourses;
+    const response = await axios.get('api/admin/courses')
+    const data = response.data.Courses;
     setAllcourses({
         isLoading: false,
         courses: data

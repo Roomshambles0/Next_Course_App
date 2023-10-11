@@ -1,6 +1,5 @@
 "use client";
-import {BsGoogle} from "react-icons/bs";
-import {BsGithub} from "react-icons/bs"
+
 import axios from "axios";
 import { useState } from "react";
 import { userState } from "@/lib/store/atoms/user";
@@ -17,8 +16,9 @@ export default function Signup(){
         <p className="  font-mono font-semibold text-4xl py-5 flex justify-center ">Start your journey with 100xdevs</p>
         <h1 className="text-white font-mono font-semibold text-7xl py-5 flex justify-center px-10">Be.A.100xDEV</h1>
         </div>
-        <SignupCard  onClick={async (email,password) => {
-    const res = await axios.post(`http://localhost:3001/user/signup`, {
+        <SignupCard  onClick={async (name,email,password) => {
+    const res = await axios.post(`/api/register/user`, {
+        name: name,
         username: email,
         password: password
     }, {
@@ -26,13 +26,7 @@ export default function Signup(){
             "Content-type": "application/json"
         }
     });
-    const data = res.data;
-    localStorage.setItem("token", data.token);
-    // window.location = "/"
-   setUser({
-    isLoading:false,
-    userEmail:email
-   })
+
    // router.push("/user")
 }}></SignupCard>
         </div>
@@ -44,28 +38,23 @@ export default function Signup(){
 
 function SignupCard(props:{
   onClick:(
+      name:string,
       username:string,
       password:string
 )  => void
 }){
+  const [name ,setName] = useState("");
   const [email ,setEmail] = useState("");
   const [password,setPassword] = useState("");
 
     return <div className="md:shrink-0 flex justify-center h-full w-full ">
     <label className="block border p-5 m-10 rounded-lg">
-        <div className="p-5  flex flex-col justify-center border-b  w-full ">
-        <button><div className="border py-5 px-5 my-2 flex rounded-lg font-mono font-semibold hover:text-black hover:bg-white"><BsGoogle size={30} className="mx-2"/><p className="px-2">Continue with Google</p></div></button>
-        <button><div className="border py-5 px-5 my-2 flex rounded-lg font-mono font-semibold hover:text-black hover:bg-white"><BsGithub size={30} className="mx-2"/><p className="px-2">Continue with Gitub</p></div></button>
-        </div>
-        <p className=" flex justify-center font-mono font-semibold ">or register with email here</p>
   <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-100">
     Name
   </span>
-  <input type="Name" name="name" className="my-2 pr-48 pl-2 py-2 bg-white text-slate-500  border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none w-full rounded-md sm:text-sm focus:ring-1" placeholder="Roronoa zoro" />
-  <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-100">
-    Mobile
-  </span>
-  <input type="phone number" name="number" className="my-2 pr-48 pl-2 py-2 bg-white text-slate-500  border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none w-full rounded-md sm:text-sm focus:ring-1" placeholder="+91 1223456798" />
+  <input type="Name" name="name" className="my-2 pr-48 pl-2 py-2 bg-white text-slate-500  border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none w-full rounded-md sm:text-sm focus:ring-1" placeholder="Roronoa zoro"  onChange={(e) => {
+    setName(e.target.value);
+                    }}/>
   <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-100">
     Email
   </span>
@@ -79,7 +68,7 @@ function SignupCard(props:{
     setPassword(e.target.value);
                     }}/>
   <button className="border p-2 mt-2 rounded-md font-mono hover:text-black hover:bg-white" onClick={async() => {
-  props.onClick(email,password);
+  props.onClick(name,email,password);
 }}>Submit</button>
 </label>
     </div>
