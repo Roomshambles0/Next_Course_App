@@ -6,11 +6,12 @@ import  CredentialsProvider from "next-auth/providers/credentials";
 import { Provider } from "next-auth/providers/index";
 import { Pclient } from "@/lib/prismadb";
 import { Role } from "@prisma/client";
-
+import { PrismaAdapter } from "@auth/prisma-adapter"
   
 
 export const authOptions :AuthOptions = {
-  providers:[
+    adapter: PrismaAdapter(Pclient),
+    providers:[
         GithubProvider({
           clientId: process.env.GITHUB_ID as string,
           clientSecret: process.env.GITHUB_SECRET as string

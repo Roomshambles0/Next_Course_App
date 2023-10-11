@@ -3,7 +3,7 @@ import CourseCard from './CourseCard';
 import  LandingText  from './LandingText';
 import Companies from './Companies';
 import Testimonials from './Testimonials';
-import Signup from './Signup';
+import Signup from '../../auth/User/Signup/page';
 
 export default function Landing(){
     return<>
@@ -11,6 +11,5 @@ export default function Landing(){
 <CourseCard></CourseCard>
 <Companies></Companies>
 <Testimonials></Testimonials>
-<Signup></Signup>
-    </>
+<Signup></Signup>    </>
 }
