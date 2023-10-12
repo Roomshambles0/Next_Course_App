@@ -25,11 +25,7 @@ export const Update = ()=>{
 const UpdateCard = (props:any)=>{
   const [coursesDetails,setCourse] = useRecoilState(courseState);
   const init = async () => {
-    const response = await axios.get(`http://localhost:3001/admin/course/` + props.id, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
+    const response = await axios.get(`/api/admin/course/` + props.id)
     const data = response.data.course;
     console.log(data);
     setCourse({
@@ -92,7 +88,7 @@ setPublish(e.target.value);
     <div className="hidden peer-checked/published:block text-md font-medium text-slate-100">Your post will be publicly visible.</div>
   </fieldset></div>
   <button className="border p-2 mt-2 rounded-md font-mono hover:text-black hover:bg-white" onClick={async () => {
-                    axios.put(`http://localhost:3001/admin/courses/` + props.id, {
+                    axios.put(`/api/admin/courses/` + props.id, {
                         title: title,
                         description: description,
                         imageLink: image,
@@ -100,8 +96,7 @@ setPublish(e.target.value);
                         price:price
                     }, {
                         headers: {
-                            "Content-type": "application/json",
-                            "Authorization": "Bearer " + localStorage.getItem("token")
+                            "Content-type": "application/json"
                         }
                     });
                     let updatedCourse = {

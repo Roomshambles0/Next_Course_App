@@ -15,18 +15,15 @@ const router = useRouter();
     <p className="font-mono font-semibold text-4xl py-5 flex justify-center ">Create Courses and start teaching with us </p>
         </div>
     <CreateCard onClick={async (title,description,price,image,publish) => {
-    const response = await axios.post(`http://localhost:3001/admin/courses`, {
+    const response = await axios.post(`/api/admin/courses`, {
       title:title,
        description:description,
        price:price,
        imageLink:image,
        published:publish
-    }, {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
     });
-   // window.location = "/"
+    alert("course named " + title +" is created")
+      router.push("/admin") 
 }}></CreateCard>
     </div>)
 }

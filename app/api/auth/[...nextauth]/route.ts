@@ -28,14 +28,14 @@ export const authOptions :AuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                
+                console.log(credentials);
                 if (!credentials) {
                     return null;
                 }
                 const username = credentials.username;
                 const password = credentials.password;
                 // Add logic here to look up the user from the credentials supplied
-                const hashedpassword = await bcrypt.hash(password, 12);
+        
                 const admin = await Pclient.admin.findUnique({
                     where:{
                         email: username
@@ -46,11 +46,16 @@ export const authOptions :AuthOptions = {
                     throw new Error('Admin doesnt exist');
                     
                 } else {
-                    //TODO:: Make this safer, encrypt passwords
-                    if (admin.hashedpassword !== hashedpassword || admin.email !== username) {
+                    const isCorrectPassword = await bcrypt.compare(
+                        credentials.password,
+                        admin.hashedpassword
+                      );
+              
+      
+    
+                    if (!isCorrectPassword|| admin.email !== username) {
                         throw new Error('Invalid credentials');
                     }
-
                 const role =  Role.ADMIN;
                 const user = await Pclient.user.findUnique({
                 where:{
@@ -68,13 +73,16 @@ export const authOptions :AuthOptions = {
             username: { label: "Username", type: "text", placeholder: "jsmith" },
             password: { label: "Password", type: "password" }
         }, async authorize(credentials, req) {
+            console.log(credentials)
             if (!credentials) {
                 return null;
             }
             const username = credentials.username;
             const password = credentials.password;
             // Add logic here to look up the user from the credentials supplied
-            const hashedpassword = await bcrypt.hash(password, 12);
+           
+
+        
             const student =  await Pclient.student.findUnique({
               where:{  
                 email:username
@@ -85,7 +93,14 @@ export const authOptions :AuthOptions = {
                 
             } else {
                 //TODO:: Make this safer, encrypt passwords
-                if (student.hashedpassword !== hashedpassword || student.email !== username) {
+                const isCorrectPassword = await bcrypt.compare(
+                    credentials.password,
+                    student.hashedpassword
+                  );
+          
+  
+
+                if (!isCorrectPassword|| student.email !== username) {
                     throw new Error('Invalid credentials');
                 }
 

@@ -8,10 +8,10 @@ import { useRecoilState,useSetRecoilState } from "recoil";
 import { signIn } from 'next-auth/react';
 
 
-export default function Adminsignin(){
+export default function Signin(){
   const setAdmin = useSetRecoilState(adminState);
     return (<div>
-        <div className="mx-auto w-full  bg-stone-800  border-white text-white overflow-hidden shadow-md h-full pt-48">
+        <div className="mx-auto w-full  bg-black  border-white text-white overflow-hidden shadow-md h-full pt-48">
         <div className="p-5">
         <p className="  font-mono font-semibold text-4xl pt-5 flex justify-center ">Sign in to <i className=" mx-5 text-black bg-white border  text-center ">100xDEVS</i></p>
         </div>
@@ -71,14 +71,14 @@ function SigninCard(){
                     }}/>
   <button className="border p-2 mt-2 rounded-md font-mono hover:text-black hover:bg-white" onClick={async() => {
   
-    signIn('admin', { redirect: false, username:email,password:password})
+    signIn('user', { redirect: false, username:email,password:password})
     .then((callback) => {
       if (callback?.error) {
         console.error('Invalid credentials!');
       }
 
       if (callback?.ok) {
-        router.push('/admin/courses')
+        router.push('/user')
       }
     })
 }}>Signin</button>

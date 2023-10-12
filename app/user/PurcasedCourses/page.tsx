@@ -10,11 +10,7 @@ import { coursesDetails } from "@/lib/store/selectors/courses"
   const setAllcourses = useSetRecoilState(coursesstate) ;
   const Courses = useRecoilValue(coursesDetails);
   const init = async () => {
-      const response = await axios.get(`http://localhost:3001/user/purchasedCourses`, {
-          headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-      })
+      const response = await axios.get(`/api/user/purchasedCourses`)
       const data = response.data.purchasedCourses;
       setAllcourses({
           isLoading: false,

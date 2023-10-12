@@ -39,19 +39,19 @@ function SigninCard(){
                      }
              
                      if (callback?.ok) {
-                       router.push('/admin/courses')
+                       router.push('/admin')
                      }
                    })
                   }}><div className="border py-5 px-5 my-2 flex rounded-lg font-mono font-semibold hover:text-black hover:bg-white" ><BsGoogle size={30} className="mx-2"/><p className="px-2">Continue with Google</p></div></button>
         <button onClick={() =>{
-           signIn('github', { redirect: false })
+           signIn('google', { redirect: false })
            .then((callback) => {
              if (callback?.error) {
                console.error('Invalid credentials!');
              }
      
              if (callback?.ok) {
-               router.push('/admin/courses')
+               router.push('/admin')
              }
            })
           
@@ -78,7 +78,7 @@ function SigninCard(){
       }
 
       if (callback?.ok) {
-        router.push('/admin/courses')
+        router.push('/admin')
       }
     })
 }}>Signin</button>

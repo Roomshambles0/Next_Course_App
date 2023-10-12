@@ -14,11 +14,7 @@ import { coursesDetails } from "@/lib/store/selectors/courses"
 const setAllcourses = useSetRecoilState(coursesstate) 
 
 const init = async () => {
-    const response = await axios.get(`http://localhost:3001/user/courses`, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
+    const response = await axios.get(`/api/user/courses`)
     const data = response.data.courses;
     console.log(data);
     setAllcourses({
@@ -79,12 +75,7 @@ const CourseCard = (props:any) =>{
     </div>
     <button className="mx-8 mb-5 p-2 border rounded-lg font-semibold font-mono hover:bg-white hover:text-black" onClick={async () => {
                   console.log(localStorage.getItem("token"));
-                     axios.post(`http://localhost:3001/user/courses/` + id,{
-                        headers: {
-
-                          Authorization: `Bearer ${localStorage.getItem('token')}`
-                        }
-                    });
+                     axios.post(`/api/user/courses/` + id);
                     alert("course " + props.Cname +" purchased")
                     }}>Purchase</button>
     </div> 
