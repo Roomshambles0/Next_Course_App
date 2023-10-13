@@ -8,25 +8,14 @@ import { useEffect } from "react";
 
 export default function InitUser() {
     const setUser = useSetRecoilState(userState);
-    const init = async() => {
+    const init = () => {
         try {
-            const response = await axios.get(`http://localhost:3001/user/me`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
+            axios.get(`/api/Session/user`).then((response)=>{
+                return setUser({
+                    isLoading: false,
+                    userEmail: response.data.email
+                })
             })
-  
-            if (response.data.username) {
-                setUser({
-                    isLoading: false,
-                    userEmail: response.data.username
-                })
-            } else {
-                setUser({
-                    isLoading: false,
-                    userEmail: ""
-                })
-            }
         } catch (e) {
   
             setUser({

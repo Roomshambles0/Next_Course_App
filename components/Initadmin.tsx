@@ -8,24 +8,14 @@ import { useEffect } from "react";
 
 export default function InitAdmin() {
     const setAdmin = useSetRecoilState(adminState);
-    const init = async() => {
+    const init = () => {
         try {
-            const response = await axios.get(`http://localhost:3001/admin/me`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
+            axios.get(`/api/Session/admin`).then((response)=>{
+                return setAdmin({
+                    isLoading: false,
+                    userEmail: response.data.email
+                })
             })
-            if (response.data.username) {
-                setAdmin({
-                    isLoading: false,
-                    userEmail: response.data.username
-                })
-            } else {
-                setAdmin({
-                    isLoading: false,
-                    userEmail: ""
-                })
-            }
         } catch (e) {
   
             setAdmin({

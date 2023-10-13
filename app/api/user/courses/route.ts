@@ -5,6 +5,16 @@ import { NextResponse } from "next/server";
 
 
 export async function GET(request: Request) {
-const courses = await Pclient.course.findMany();
-    NextResponse.json({ courses });
+try {
+    const courses = await Pclient.course.findMany();
+
+    if (courses) {
+      return NextResponse.json({ courses });
+    } else {
+      return NextResponse.json({ message: "courses not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: "internal server error" }, { status: 500 });
+  }
 }
