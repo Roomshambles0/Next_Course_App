@@ -2,10 +2,11 @@
 import axios from "axios";
 import { useState } from "react";
 import Link from "next/link";
-
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Adminsignup(){
-
+const router = useRouter();
     return (
         <div className="mx-auto w-full  bg-stone-800  border-white text-white overflow-hidden shadow-md h-full pt-48">
         <div className="p-5">
@@ -13,15 +14,28 @@ export default function Adminsignup(){
         <h1 className="text-white font-mono font-semibold text-7xl pt-5 flex justify-center lg:px-10">Join us as teachers</h1>
         </div>
         <SignupCard  onClick={async (name,email,password) => {
-    const res = await axios.post(`/api/register/admin`, {
-        name:name,
-        username: email,
-        password: password
-    }, {
-        headers: {
-            "Content-type": "application/json"
+    axios.post(`/api/register/admin`, {
+      name: name,
+      username: email,
+      password: password
+  }).then((response)=>{
+    signIn('admin', { redirect: false, username:email,password:password})
+      .then((callback) => {
+        if (callback?.error) {
+          console.error('Invalid credentials!');
         }
-    });
+  
+        if (callback?.ok) {
+          router.push('/admin')
+        }
+      })
+
+  });
+
+  
+    // if(res.data){
+    //   
+    // }
    
 }}></SignupCard>
         </div>
@@ -65,7 +79,7 @@ function SignupCard(props:{
   <button className="border p-2 mt-2 rounded-md font-mono hover:text-black hover:bg-white" onClick={async() => {
   props.onClick(name,email,password);
 }}>Signup</button>
-<p className=" flex justify-center font-mono font-semibold  border-t my-4 w-full">Already have an account? <Link href="/admin/signin">Log in</Link></p>
+<p className=" flex justify-center font-mono font-semibold  border-t my-4 w-full">Already have an account? <Link href="/auth/Admin/Signin">Log in</Link></p>
 </label>
     </div>
 }

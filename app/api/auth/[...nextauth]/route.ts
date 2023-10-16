@@ -42,7 +42,7 @@ export const authOptions :AuthOptions = {
                     }
                 })
 
-                if (!admin || admin.hashedpassword) {
+                if (!admin) {
                     throw new Error('Admin doesnt exist');
                     
                 } else {
@@ -63,6 +63,7 @@ export const authOptions :AuthOptions = {
                     role
                 }
                 })
+                console.log(user)
                     return user
                 }
             }

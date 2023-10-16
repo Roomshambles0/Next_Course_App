@@ -5,29 +5,40 @@ import { useState } from "react";
 import { userState } from "@/lib/store/atoms/user";
 import { useRecoilState,useSetRecoilState } from "recoil";
 import { useRouter } from 'next/navigation'
-
+import { signIn } from "next-auth/react";
 
 export default function Signup(){
   const router = useRouter();
   const setUser = useSetRecoilState(userState);
     return (
-        <div className="mx-auto w-full  bg-black  border-white text-white overflow-hidden shadow-md h-full ">
+        <div className="mx-auto w-full py-52 bg-black  border-white text-white overflow-hidden shadow-md h-full ">
         <div className="p-8">
         <p className="  font-mono font-semibold text-4xl py-5 flex justify-center ">Start your journey with 100xdevs</p>
         <h1 className="text-white font-mono font-semibold text-7xl py-5 flex justify-center px-10">Be.A.100xDEV</h1>
         </div>
-        <SignupCard  onClick={async (name,email,password) => {
-    const res = await axios.post(`/api/register/user`, {
+        <SignupCard  onClick={ (name,email,password) => {
+    axios.post(`/api/register/user`, {
         name: name,
         username: email,
         password: password
-    }, {
-        headers: {
-            "Content-type": "application/json"
+    }).then((response)=>{
+    signIn('user', { redirect: false, username:email,password:password})
+      .then((callback) => {
+        if (callback?.error) {
+          console.error('Invalid credentials!');
         }
+  
+        if (callback?.ok) {
+          router.push('/user')
+        }
+      })
     });
 
-   // router.push("/user")
+   
+
+    // if(responce.data ){
+   
+ //   }
 }}></SignupCard>
         </div>
     )
