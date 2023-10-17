@@ -14,43 +14,49 @@ import { useRouter } from "next/navigation"
 export const Created = ()=>{
   const setAllcourses = useSetRecoilState(coursesstate); 
   let courseDetail = useRecoilValue(coursesstate);
-  let courses = courseDetail.courses;
+ const [courses, setCourses] = useState([]);
   const init = async () => {
     const response = await axios.get('api/admin/courses')
-    const data = response.data.Courses;
-    setAllcourses({
-        isLoading: false,
-        courses: data
-    })
+    const data = response.data.courses;
+    console.log(response)
+    setCourses(data)
 }
-
+console.log(courses)
 useEffect(() => {
     init();
 }, []);
-
+ if(courses){
     return(<div>  
         <div className="bg-stone-800 text-white h-full font-mono font-semibold text-7xl lg:pt-64 md:pt-72  flex justify-center px-10">Your Courses</div> 
     <div className="course-grid grid grid-cols-3 gap-10">
-{courses.map((test:any)=>
-       {
+{courses.map((test:any)=>{
+           test
         return <div className="p-5">
            <CourseCard 
             Cname = {test.title}
             desc= {test.description}
             img = {test.imageLink}
-            id = {test._id}
+            id = {test.id}
            ></CourseCard>
            </div>
        })
        } 
     </div> </div> )
+ }else{
+    return(
+        <div>  
+        <div className="bg-stone-800 text-white h-full font-mono font-semibold text-7xl lg:pt-64 md:pt-72  flex justify-center px-10">Your Courses</div> 
+    <div className=""></div>
+    </div> 
+    )
+ }
 }
 
 
 
 export const CourseCard = (props:any) =>{
   const router = useRouter();
-  const id = props.id;
+  const id:number = props.id;
     return <div className="">
     <div className="mx-auto w-full bg-black border-solid border-2 border-white rounded-lg text-white overflow-hidden shadow-md ">
     <div className="md:shrink-0 flex h-full ">
@@ -61,7 +67,7 @@ export const CourseCard = (props:any) =>{
     <p className="text-stone-400 text-left ...">{props.desc}</p>
     </div>
     <div className="">
-    <button className="mx-8 mb-5 p-2 border rounded-lg font-semibold font-mono hover:bg-white hover:text-black" onClick={()=>{router.push('/admin/updatecourses/' + id)}}>Edit</button>
+    <button className="mx-8 mb-5 p-2 border rounded-lg font-semibold font-mono hover:bg-white hover:text-black" onClick={()=>{router.push('/admin/Update/' + id)}}>Edit</button>
     </div>
     </div>
     </div>

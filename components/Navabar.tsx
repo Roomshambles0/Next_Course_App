@@ -84,8 +84,8 @@ export const Adminnav = (props:any)=>{
     <nav className="navbar fixed z-50">
         <i className="  px-4 lg:mx-20 text-black bg-white border py-3 text-center md:w-fit md:ml-80">100xDEVS</i>
         <div className="flex flex-col pl-50 justify-between md:flex-row text-center ">
-            <p className="navbar-elements navbar-border"><button onClick={()=>{router.push("/admin/courses")}}>Your Courses</button></p>
-            <p className="navbar-elements navbar-border"><button onClick={()=>{router.push("/admin/createcourse")}}>Create Course</button></p>
+            <p className="navbar-elements navbar-border"><button onClick={()=>{router.push("/admin")}}>Your Courses</button></p>
+            <p className="navbar-elements navbar-border"><button onClick={()=>{router.push("/admin/CreateCourse")}}>Create Course</button></p>
             <p className="navbar-elements navbar-border"><button>Manage Community</button></p>
         </div>
         <div className="right-0 text-center py-1">
@@ -95,10 +95,3 @@ export const Adminnav = (props:any)=>{
     </nav>
     </div>
 }
-
-
-
-
-
-
-

@@ -14,20 +14,12 @@ export async function POST(
         
         const parsedadminInput = adminInput.safeParse(body);
         if(!parsedadminInput.success){
-         return   NextResponse.json({"message":"add correct Input"},{status:403});
+         return   NextResponse.json({"message":parsedadminInput.error},{status:403});
         }
     
     
         const role = Role.ADMIN;
         const hashedpassword = await bcrypt.hash(password, 12);
-        const student = await Pclient.admin.create({
-            data:{
-                email:username,
-                name,
-                hashedpassword
-            }
-        })
-         
         //creating user for next auth
         const user = await Pclient.user.create({
             data:{
@@ -36,7 +28,21 @@ export async function POST(
                 role
             }
         })
-        return NextResponse.json({message:"Account is created successfully", name:username});
+       
+       if(user){
+        const student = await Pclient.admin.create({
+        data:{
+            email:username,
+            name,
+            hashedpassword
+        }
+    })
+     
+    return NextResponse.json({message:"Account is created successfully", name:username});
+}else{
+    return NextResponse.json({message:"take another username "},{status:401});
+}
+        
     
     }catch (error) {
         console.error(error);

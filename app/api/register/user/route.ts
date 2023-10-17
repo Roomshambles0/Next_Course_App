@@ -21,15 +21,7 @@ export async function POST(
     
         const role = Role.USER;
         const hashedpassword = await bcrypt.hash(password, 12);
-        const student = await Pclient.student.create({
-            data:{
-                email:username,
-                name,
-                hashedpassword
-            }
-        })
-         
-        //creating user for next auth
+  //creating user for next auth
         const user = await Pclient.user.create({
             data:{
                 email:username,
@@ -37,7 +29,18 @@ export async function POST(
                 role
             }
         })
-      return NextResponse.json({message:"Account created successfully",name:username});
+        if(user){
+        const student = await Pclient.student.create({
+            data:{
+                email:username,
+                name,
+                hashedpassword
+            }
+        })
+        return NextResponse.json({message:"Account created successfully",name:username});
+    }else{
+        return NextResponse.json({message:"take another username "},{status:401});
+    }
     }catch (error) {
         console.error(error);
        return NextResponse.json({ message: "internal server error" });

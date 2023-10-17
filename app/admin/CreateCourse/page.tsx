@@ -5,3 +5,6 @@ const Create = () =>{
 
     return (<CreateCourse></CreateCourse>)
 }
+
+
+export default Create

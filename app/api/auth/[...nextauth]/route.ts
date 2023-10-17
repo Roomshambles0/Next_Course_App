@@ -46,14 +46,13 @@ export const authOptions :AuthOptions = {
                     throw new Error('Admin doesnt exist');
                     
                 } else {
-                    const isCorrectPassword = await bcrypt.compare(
+                const isCorrectPassword = await bcrypt.compare(
                         credentials.password,
                         admin.hashedpassword
                       );
               
-      
     
-                    if (!isCorrectPassword|| admin.email !== username) {
+                if (!isCorrectPassword|| admin.email !== username) {
                         throw new Error('Invalid credentials');
                     }
                 const role =  Role.ADMIN;

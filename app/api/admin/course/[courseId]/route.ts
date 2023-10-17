@@ -18,12 +18,13 @@ export async function GET(request: Request, { params }: { params: IParams }) {
           }  
         }
      )
+     console.log(course)
      return NextResponse.json({course})
         }else{
-            NextResponse.json({message:"admin not found"})
+           return NextResponse.json({message:"admin not found"})
         }
     }catch(e){
         console.log(e)
-        NextResponse.json(null);
+       return NextResponse.json(null);
     }
 }

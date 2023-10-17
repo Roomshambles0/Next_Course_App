@@ -8,8 +8,9 @@ import axios from "axios";
 import { courseTitle, coursePrice, isCourseLoading, courseImage,courseDescription,coursePublish, courseDetails} from "@/lib/store/selectors/course";
 
 
-export const Update = ()=>{
+ const Update = ()=>{
   let  {id}  = useParams();
+ 
     return(<div className="mx-auto w-full  bg-stone-800   border-white text-white overflow-hidden shadow-md h-full pt-60">
     <div className="p-8">
     <p className="font-mono font-bold text-4xl pt-5 flex justify-center ">Update Course</p>
@@ -23,15 +24,18 @@ export const Update = ()=>{
 
 
 const UpdateCard = (props:any)=>{
+  const id = props.id;
+ const cid =  parseInt(id);
+ console.log(cid)
   const [coursesDetails,setCourse] = useRecoilState(courseState);
   const init = async () => {
-    const response = await axios.get(`/api/admin/course/` + props.id)
-    const data = response.data.course;
+    const response = await axios.get(`/api/admin/course/` + cid)
+    const data = response.data;
     console.log(data);
-    setCourse({
-        isLoading: false,
-        course: data
-    })
+    // setCourse({
+    //     isLoading: false,
+    //     course: data
+    // })
 }
 
 useEffect(() => {
@@ -112,3 +116,6 @@ setPublish(e.target.value);
     </div>
 )
 }
+
+
+export default Update;

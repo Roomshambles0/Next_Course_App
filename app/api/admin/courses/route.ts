@@ -7,35 +7,36 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try{
     const body =await request.json();
-    const {course} = body;
+    const course = body;
     const user = await getCurrentUser();
+    console.log(course)
     if(user){
       if(user.role == "ADMIN"){
         const admin =await getCurrentAdmin();
+        if(admin){
        const createCourse =  await Pclient.course.create({
           data: {
-           title: course.title,
+           title: body.title,
            description: course.description,
            imageLink: course.imageLink,
            published: course.published,
-           teacher: {
-              connect: {
-                  id: admin?.id
-              }
-           }
+           teacherId:admin.id
           }
         })
+      
+        console.log(createCourse)
         return NextResponse.json({"message":"Course created succefully",CourseId:createCourse.id})
+      }
       }else{
-        NextResponse.json({message:"user is not admin"},{status:400})
+       return NextResponse.json({message:"user is not admin"},{status:400})
     }
     }else{
-      NextResponse.json({message:"user not found"},{status:400})
+      return NextResponse.json({message:"user not found"},{status:400})
     }
 
   }catch(e){
     console.log(e);
-    NextResponse.json({Error:'Internal Error'},{status:500})
+   return NextResponse.json({Error:'Internal Error'},{status:500})
   }
 }
 
