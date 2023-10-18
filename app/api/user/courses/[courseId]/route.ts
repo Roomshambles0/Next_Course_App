@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 
 interface IParams {
-  courseId?: number;
+  courseId?: string;
 }
 
 
@@ -19,10 +19,10 @@ try {
   if(user){
   const course = await Pclient.course.findUnique({
     where:{
-      id:courseId
+      id:parseInt(courseId as string)
     }
   })
- 
+ console.log(course)
   if(!course) {
     throw new Error('Course not found');
   }
@@ -39,11 +39,10 @@ try {
       },
     },
   });
- NextResponse.json({message:"course purchased successfully"} ,{status:200})
+ return NextResponse.json({message:"course purchased successfully"} ,{status:200})
   }
 }catch(e){
-  NextResponse.json(null);
+  console.log(e)
+  return NextResponse.json(null);
 }
-
-   
   }

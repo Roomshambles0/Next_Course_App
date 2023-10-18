@@ -6,7 +6,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
 try {
-    const courses = await Pclient.course.findMany();
+    const courses = await Pclient.course.findMany(
+      {
+        where:{
+          published:true
+        }
+      }
+    );
 
     if (courses) {
       return NextResponse.json({ courses });

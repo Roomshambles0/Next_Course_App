@@ -46,8 +46,8 @@ const Allcourses = (props:any)=>{
             Cname = {test.title}
             desc= {test.description}
             img = {test.imageLink}
-            price = {test.price}
-            id = {test._id}
+            price = {test.Price}
+            id = {test.id}
            ></CourseCard>
         )
        })
@@ -74,9 +74,9 @@ const CourseCard = (props:any) =>{
     <p className="pt-2 font-extrabold text-lg ">{props.price}</p>
     </div>
     <button className="mx-8 mb-5 p-2 border rounded-lg font-semibold font-mono hover:bg-white hover:text-black" onClick={async () => {
-                  console.log(localStorage.getItem("token"));
-                     axios.post(`/api/user/courses/` + id);
-                    alert("course " + props.Cname +" purchased")
+                  
+                    await axios.post(`/api/user/courses/` + id);
+                   await alert("course " + props.Cname +" purchased")
                     }}>Purchase</button>
     </div> 
     </div>

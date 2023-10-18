@@ -1,30 +1,29 @@
 "use client";
 import { useState,useEffect } from "react"
 import axios from "axios"
-import { useSetRecoilState,useRecoilValue } from "recoil"
-import { courseState, coursesstate } from "@/lib/store/atoms/course"
-import { coursesDetails } from "@/lib/store/selectors/courses"
 
 
  const Purchased = ()=>{
-  const setAllcourses = useSetRecoilState(coursesstate) ;
-  const Courses = useRecoilValue(coursesDetails);
+ const [courseArr,setCourseArr] = useState([])
+
+
   const init = async () => {
       const response = await axios.get(`/api/user/purchasedCourses`)
-      const data = response.data.purchasedCourses;
-      setAllcourses({
-          isLoading: false,
-          courses: data
-      })
+      const data = response.data.courses;
+  setCourseArr(data);
   }
   
   useEffect(() => {
       init();
   }, []);
+  
+
+
+
     return(<div>  
         <div className="bg-black text-white md:h-96 lg:h-64 font-mono font-semibold text-7xl lg:pt-44 md:pt-72 flex justify-center px-10">my Learnings</div> 
     <div className="course-card-grid grid grid-cols-3 gap-10">
-{Courses.map((test:any)=>
+{courseArr.map((test:any)=>
        {
         return <div className="px-5">
            <CourseCard 
@@ -36,6 +35,7 @@ import { coursesDetails } from "@/lib/store/selectors/courses"
        })
        } 
     </div> </div> )
+  
 }
 
 

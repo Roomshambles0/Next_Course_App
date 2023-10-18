@@ -8,7 +8,7 @@ export async function GET(request: Request){
 try {
     const user = await getCurrentUser();
     if(!user){
-        NextResponse.json(null);
+       return NextResponse.json(null);
     }
 
     const student = await Pclient.student.findUnique({
@@ -20,9 +20,9 @@ try {
         }
     })
    const courses = student?.purchasedcourses;
-
+console.log(student)
    return NextResponse.json({courses})
 }catch(e){
-    NextResponse.json({status:400})
+  return  NextResponse.json({status:400})
 }
 }

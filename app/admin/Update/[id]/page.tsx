@@ -5,7 +5,7 @@ import { useState,useEffect } from "react";
 import { courseState } from "@/lib/store/atoms/course";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import axios from "axios";
-import { courseTitle, coursePrice, isCourseLoading, courseImage,courseDescription,coursePublish, courseDetails} from "@/lib/store/selectors/course";
+import {  courseDetails} from "@/lib/store/selectors/course";
 
 
  const Update = ()=>{
@@ -25,32 +25,42 @@ import { courseTitle, coursePrice, isCourseLoading, courseImage,courseDescriptio
 
 const UpdateCard = (props:any)=>{
   const id = props.id;
- const cid =  parseInt(id);
- console.log(cid)
-  const [coursesDetails,setCoursedetails] = useRecoilState(courseState);
-  const init =  () => {
-     axios.get(`/api/admin/course/` + cid).
-     then((response)=>{
-      const data = response.data.course;
-      setCoursedetails({
-        isLoading: false,
-        course: data
-    })
-    console.log(coursesDetails.course)
+  const cid =  parseInt(id);
+  console.log(cid)
+   const [coursesDetails,setCoursedetails] = useRecoilState(courseState);
+   const init =  () => {
+      axios.get(`/api/admin/course/` + cid).
+      then((response)=>{
+       let data = response.data.course;
+       setCoursedetails({
+         isLoading: false,
+         course: data
      })
-}
+      })
+ }
+ 
 
-useEffect(() => {
-    init();
-}, []);
+ useEffect(()=>{
+  init()
+ },[cid])
 
-if(courseDetails){
-const [title,setTitle] = useState(coursesDetails.course.title);
-const [description, setDescription] = useState(coursesDetails.course.description);
-const [image, setImage] = useState(coursesDetails.course.imageLink);
-const [price, setPrice] = useState(coursesDetails.course.price);
-const [publish, setPublish] = useState(coursesDetails.course.published);
-console.log(title)
+
+ if(courseDetails){
+ const [title,setTitle] = useState("");
+ const [description, setDescription] = useState("");
+ const [image, setImage] = useState("");
+ const [price, setPrice] = useState("");
+ const [publish, setPublish] = useState(true);
+ console.log(title)
+ useEffect(()=>{
+    setTitle(coursesDetails.course.title);
+    setDescription(coursesDetails.course.description);
+    setImage(coursesDetails.course.imageLink);
+    setPrice(coursesDetails.course.Price);
+    setPublish(coursesDetails.course.published);
+    
+ },[coursesDetails])
+
     return( <div className="md:shrink-0 flex justify-center h-full w-full bg-black">
     <label className="block border p-5 m-10 rounded-lg">
   <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-100">
@@ -103,7 +113,7 @@ if(e.target.value=="true"){
                         description: description,
                         imageLink: image,
                         published: publish,
-                        price:price
+                        Price:price
                     }, {
                         headers: {
                             "Content-type": "application/json"
@@ -114,7 +124,7 @@ if(e.target.value=="true"){
                         title: title,
                         description: description,
                         imageLink: image,
-                        price:price,
+                        Price:price,
                         published:publish,
                         teacherId:coursesDetails.course.teacherId
                     };

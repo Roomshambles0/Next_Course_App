@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const body =await request.json();
     const course = body;
     const user = await getCurrentUser();
-    console.log(course)
+    console.log(course.price)
     if(user){
       if(user.role == "ADMIN"){
         const admin =await getCurrentAdmin();

@@ -33,7 +33,7 @@ model Course {
   title        String 
   description  String 
   imageLink    String
-  Price        Int
+  Price        String
   published    Boolean
   teacher      Admin  @relation(fields: [teacherId], references:[id])
   teacherId    Int
