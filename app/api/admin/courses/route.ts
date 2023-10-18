@@ -19,6 +19,7 @@ export async function POST(request: Request) {
            title: body.title,
            description: course.description,
            imageLink: course.imageLink,
+           Price:course.price,
            published: course.published,
            teacherId:admin.id
           }
