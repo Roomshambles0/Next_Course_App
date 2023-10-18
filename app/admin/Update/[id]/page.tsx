@@ -27,28 +27,30 @@ const UpdateCard = (props:any)=>{
   const id = props.id;
  const cid =  parseInt(id);
  console.log(cid)
-  const [coursesDetails,setCourse] = useRecoilState(courseState);
-  const init = async () => {
-    const response = await axios.get(`/api/admin/course/` + cid)
-    const data = response.data;
-    console.log(data);
-    // setCourse({
-    //     isLoading: false,
-    //     course: data
-    // })
+  const [coursesDetails,setCoursedetails] = useRecoilState(courseState);
+  const init =  () => {
+     axios.get(`/api/admin/course/` + cid).
+     then((response)=>{
+      const data = response.data.course;
+      setCoursedetails({
+        isLoading: false,
+        course: data
+    })
+    console.log(coursesDetails.course)
+     })
 }
 
 useEffect(() => {
     init();
 }, []);
 
-
+if(courseDetails){
 const [title,setTitle] = useState(coursesDetails.course.title);
 const [description, setDescription] = useState(coursesDetails.course.description);
 const [image, setImage] = useState(coursesDetails.course.imageLink);
 const [price, setPrice] = useState(coursesDetails.course.price);
 const [publish, setPublish] = useState(coursesDetails.course.published);
-
+console.log(title)
     return( <div className="md:shrink-0 flex justify-center h-full w-full bg-black">
     <label className="block border p-5 m-10 rounded-lg">
   <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-100">
@@ -78,13 +80,17 @@ setImage(e.target.value);
   <div><fieldset>
     <legend className=" block text-sm font-medium text-slate-100 after:content-['*'] after:ml-0.5 after:text-red-500">Published status</legend>
   
-    <input id="draft" className="peer/draft" type="radio" name="status" value="false" checked={publish == "false"} onChange={(e) => {
-setPublish(e.target.value);
+    <input id="draft" className="peer/draft" type="radio" name="status" value="false" checked={publish == false} onChange={(e) => {
+if(e.target.value=="false"){
+  setPublish(false);
+}
                 }}/>
     <label htmlFor="draft" className="peer-checked/draft:text-white text-sm font-medium text-slate-400 pr-2 pl-2" >false</label>
   
-    <input id="published" className="peer/published " type="radio" name="status" value="true" checked={publish == "true"} onChange={(e) => {
-setPublish(e.target.value);
+    <input id="published" className="peer/published " type="radio" name="status" value="true" checked={publish == true} onChange={(e) => {
+if(e.target.value=="true"){
+  setPublish(true);
+}
                 }}/>
     <label htmlFor="published" className="peer-checked/published:text-white text-sm font-medium text-slate-400 pl-2">true</label>
   
@@ -92,7 +98,7 @@ setPublish(e.target.value);
     <div className="hidden peer-checked/published:block text-md font-medium text-slate-100">Your post will be publicly visible.</div>
   </fieldset></div>
   <button className="border p-2 mt-2 rounded-md font-mono hover:text-black hover:bg-white" onClick={async () => {
-                    axios.put(`/api/admin/courses/` + props.id, {
+                   await axios.put(`/api/admin/courses/` + props.id, {
                         title: title,
                         description: description,
                         imageLink: image,
@@ -104,18 +110,20 @@ setPublish(e.target.value);
                         }
                     });
                     let updatedCourse = {
+                        id:coursesDetails.course.id,
                         title: title,
                         description: description,
                         imageLink: image,
                         price:price,
-                        published:publish
+                        published:publish,
+                        teacherId:coursesDetails.course.teacherId
                     };
-                    setCourse({course: updatedCourse, isLoading: false});
+                    setCoursedetails({course: updatedCourse, isLoading: false});
                 }}>Submit</button>
 </label>
     </div>
 )
 }
+}
 
-
-export default Update;
+export default Update
