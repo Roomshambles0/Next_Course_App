@@ -2,7 +2,7 @@ import { getCurrentstudent } from "@/app/actions/getCurrentStudent";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { Pclient } from "@/lib/prismadb";
 import { NextResponse } from "next/server";
-
+import { IdInput } from "@/lib/validations/coursIdinput";
 
 interface IParams {
   courseId?: string;
@@ -15,6 +15,14 @@ export async function POST( request: Request,
 try {  
   const user = await getCurrentstudent()
   const { courseId } = params;
+
+
+  const parsedIdInput = IdInput.safeParse(courseId);
+  if(!parsedIdInput.success){
+     return NextResponse.json({"message":"add correct Input"},{status:403});
+  }
+  console.log(parsedIdInput)
+  
   
   if(user){
   const course = await Pclient.course.findUnique({

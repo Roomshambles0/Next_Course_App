@@ -2,7 +2,8 @@ import { getCurrentAdmin } from '@/app/actions/getCurrentAdmin';
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import { Pclient } from '@/lib/prismadb';
 import { NextResponse } from 'next/server';
-
+import { courseInput } from '@/lib/validations/courseInput';
+import { IdInput } from '@/lib/validations/coursIdinput';
 
 
 interface IParams {
@@ -13,8 +14,21 @@ interface IParams {
 export async function PUT(request:Request, { params }: { params: IParams }) {
    try{
     const body =await request.json();
+    const parsedCourseInput = courseInput.safeParse(body);
+    if(!parsedCourseInput.success){
+       return NextResponse.json({"message":"add correct Input"},{status:403});
+    }
+    console.log(parsedCourseInput)
+
+
     const course = body;
     const { courseId } = params;
+    const parsedIdInput = IdInput.safeParse(courseId);
+    if(!parsedIdInput.success){
+       return NextResponse.json({"message":"add correct Input"},{status:403});
+    }
+    console.log(parsedIdInput)
+
     const admin = await getCurrentAdmin();
    
     if(admin){

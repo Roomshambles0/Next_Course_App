@@ -1,9 +1,30 @@
 import { z } from "zod";
 export const courseInput = z.
 object({
-    email: z.string(),
-    name: z.string(),
-    password: z.string()
+    title: z.
+    string( {invalid_type_error: "title must be a string"}).
+    min(2 ,{
+        message: "title is required"
+    }),
+    description: z.
+    string( {invalid_type_error: "Description must be a string"}).
+    min(2 ,{
+        message: "Description is required"
+    }),
+    imageLink: z.
+    string( {invalid_type_error: "ImageLink must be a string"}).
+    min(2 ,{
+        message: "ImageLink is required"
+    }),
+    Price:z.
+    string( {invalid_type_error: "Price must be a string"}).
+    min(2 ,{
+        message: "Price is required"
+    }),
+    published: z.boolean({
+        required_error: "Published is required",
+        invalid_type_error: "Published must be a boolean",
+      })
 })
 
 
