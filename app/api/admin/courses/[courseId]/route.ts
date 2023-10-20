@@ -16,7 +16,7 @@ export async function PUT(request:Request, { params }: { params: IParams }) {
     const body =await request.json();
     const parsedCourseInput = courseInput.safeParse(body);
     if(!parsedCourseInput.success){
-       return NextResponse.json({"message":"add correct Input"},{status:403});
+       return NextResponse.json({"message":"add correct couese"},{status:403});
     }
     console.log(parsedCourseInput)
 
@@ -25,7 +25,7 @@ export async function PUT(request:Request, { params }: { params: IParams }) {
     const { courseId } = params;
     const parsedIdInput = IdInput.safeParse(courseId);
     if(!parsedIdInput.success){
-       return NextResponse.json({"message":"add correct Input"},{status:403});
+       return NextResponse.json({"message":"add correct Id"},{status:403});
     }
     console.log(parsedIdInput)
 

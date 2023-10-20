@@ -113,7 +113,7 @@ if(e.target.value=="true"){
                         description: description,
                         imageLink: image,
                         published: publish,
-                        Price:price
+                        price:price
                     }, {
                         headers: {
                             "Content-type": "application/json"

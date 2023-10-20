@@ -9,8 +9,8 @@ export async function POST(request: Request) {
   try{
     const body =await request.json();
     const course = body;
-
-    const parsedCourseInput = courseInput.safeParse(body);
+      console.log(body)
+    const parsedCourseInput = courseInput.safeParse(course);
         if(!parsedCourseInput.success){
            return NextResponse.json({"message":"add correct Input"},{status:403});
         }
